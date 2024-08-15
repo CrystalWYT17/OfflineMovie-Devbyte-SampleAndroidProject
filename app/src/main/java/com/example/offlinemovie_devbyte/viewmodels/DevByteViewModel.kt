@@ -19,9 +19,14 @@ package com.example.offlinemovie_devbyte.viewmodels
 
 import android.app.Application
 import androidx.lifecycle.*
+import com.example.offlinemovie_devbyte.database.getDatabase
 import com.example.offlinemovie_devbyte.domain.Video
 import com.example.offlinemovie_devbyte.network.Network
 import com.example.offlinemovie_devbyte.network.asDomainModel
+import com.example.offlinemovie_devbyte.repository.VideosRepository
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.launch
 import java.io.IOException
 
@@ -38,50 +43,27 @@ import java.io.IOException
 class DevByteViewModel(application: Application) : AndroidViewModel(application) {
 
     /**
-     *
+     * This is the job for all coroutines started by this ViewModel.
+     * Cancelling job will cancel all coroutines started by this ViewModel.
      */
+    private val viewModelJob = SupervisorJob()
 
     /**
-     *
+     *This is main scope for all coroutines launched by ViewModel.
      */
+    private val viewModelScope = CoroutineScope(viewModelJob + Dispatchers.Main)
 
-    /**
-     * A playlist of videos that can be shown on the screen. This is private to avoid exposing a
-     * way to set this value to observers.
-     */
-    private val _playlist = MutableLiveData<List<Video>>()
+    private val database = getDatabase(application)
+    private val videoRespository = VideosRepository(database)
 
-    /**
-     * A playlist of videos that can be shown on the screen. Views should use this to get access
-     * to the data.
-     */
-    val playlist: LiveData<List<Video>>
-        get() = _playlist
-
-    /**
-     * init{} is called immediately when this ViewModel is created.
-     */
     init {
-        refreshDataFromNetwork()
-    }
-
-    /**
-     * Refresh data from network and pass it via LiveData. Use a coroutine launch to get to
-     * background thread.
-     */
-    private fun refreshDataFromNetwork() = viewModelScope.launch {
-        try {
-            val playlist = Network.devbytes.getPlaylist().await()
-            _playlist.postValue(playlist.asDomainModel())
-        } catch (networkError: IOException) {
-            // Show an infinite loading spinner if the request fails
-            // challenge exercise: show an error to the user if the network request fails
+        viewModelScope.launch {
+            videoRespository.refreshVideos()
         }
     }
 
-    /**
-     */
-
+    val playlist = videoRespository.videos
+    
     /**
      * Factory for constructing DevByteViewModel with parameter
      */
