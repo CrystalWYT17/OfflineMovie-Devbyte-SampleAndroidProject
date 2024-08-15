@@ -27,6 +27,10 @@ import retrofit2.HttpException
 
 class RefreshDataWork(appContext: Context, params: WorkerParameters) :
     CoroutineWorker(appContext, params) {
+
+    companion object {
+        const val WORK_NAME = "RefreshDataWorker"
+    }
     @SuppressLint("RestrictedApi")
     override suspend fun doWork(): Result {
         val database = getDatabase(applicationContext)
