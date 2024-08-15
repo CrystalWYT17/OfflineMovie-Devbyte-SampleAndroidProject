@@ -63,7 +63,7 @@ class DevByteViewModel(application: Application) : AndroidViewModel(application)
     }
 
     val playlist = videoRespository.videos
-    
+
     /**
      * Factory for constructing DevByteViewModel with parameter
      */
