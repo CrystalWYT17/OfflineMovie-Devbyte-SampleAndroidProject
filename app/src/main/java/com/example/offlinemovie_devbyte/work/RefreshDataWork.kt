@@ -16,3 +16,27 @@
  */
 
 package com.example.offlinemovie_devbyte.work
+
+import android.annotation.SuppressLint
+import android.content.Context
+import androidx.work.CoroutineWorker
+import androidx.work.WorkerParameters
+import com.example.offlinemovie_devbyte.database.getDatabase
+import com.example.offlinemovie_devbyte.repository.VideosRepository
+import retrofit2.HttpException
+
+class RefreshDataWork(appContext: Context, params: WorkerParameters) :
+    CoroutineWorker(appContext, params) {
+    @SuppressLint("RestrictedApi")
+    override suspend fun doWork(): Result {
+        val database = getDatabase(applicationContext)
+        val repository = VideosRepository(database)
+
+        return try {
+            repository.refreshVideos()
+            Result.Success()
+        } catch (exception: HttpException) {
+            Result.retry()
+        }
+    }
+}
