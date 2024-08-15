@@ -20,6 +20,7 @@ package com.example.offlinemovie_devbyte.ui
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -70,6 +71,7 @@ class DevByteFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        Log.i("DevByteFragment","onViewCreated")
         viewModel.playlist.observe(viewLifecycleOwner, Observer<List<Video>> { videos ->
             videos?.apply {
                 viewModelAdapter?.videos = videos
@@ -95,13 +97,14 @@ class DevByteFragment : Fragment() {
      */
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
+        Log.i("DevByteFragment","onCreateView")
         val binding: FragmentDevByteBinding = DataBindingUtil.inflate(
                 inflater,
                 R.layout.fragment_dev_byte,
                 container,
                 false)
         // Set the lifecycleOwner so DataBinding can observe LiveData
-        binding.setLifecycleOwner(viewLifecycleOwner)
+        binding.lifecycleOwner = viewLifecycleOwner
 
         binding.viewModel = viewModel
 

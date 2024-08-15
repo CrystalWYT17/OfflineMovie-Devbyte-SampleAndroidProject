@@ -2,8 +2,11 @@ plugins {
     id("com.android.application")
     id("org.jetbrains.kotlin.android")
     id("androidx.navigation.safeargs")
+//    data binding kapt
     id("org.jetbrains.kotlin.kapt")
     id("kotlin-parcelize")
+//    room implementation
+    id("com.google.devtools.ksp")
 }
 
 android {
@@ -86,6 +89,7 @@ dependencies {
 
 //    room database
     implementation("androidx.room:room-runtime:2.6.1")
+    ksp("androidx.room:room-compiler:2.6.1")
 
 //    glide for image
     implementation("com.github.bumptech.glide:glide:4.16.0")

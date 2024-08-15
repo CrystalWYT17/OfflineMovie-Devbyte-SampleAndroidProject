@@ -1,8 +1,6 @@
 package com.example.offlinemovie_devbyte
 
 import android.app.Application
-import android.os.Bundle
-import androidx.activity.ComponentActivity
 import androidx.work.ExistingPeriodicWorkPolicy
 import androidx.work.PeriodicWorkRequestBuilder
 import androidx.work.WorkManager
@@ -13,8 +11,7 @@ import kotlinx.coroutines.launch
 import timber.log.Timber
 import java.util.concurrent.TimeUnit
 
-class MainActivity : Application() {
-
+class DevByteApplication : Application() {
     private val applicationScope = CoroutineScope(Dispatchers.Default)
     override fun onCreate() {
         super.onCreate()

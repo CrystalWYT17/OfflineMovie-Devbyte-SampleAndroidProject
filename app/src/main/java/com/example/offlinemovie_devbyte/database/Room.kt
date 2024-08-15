@@ -19,6 +19,7 @@ package com.example.offlinemovie_devbyte.database
 
 import android.content.Context
 import androidx.lifecycle.LiveData
+import androidx.room.Dao
 import androidx.room.Database
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
@@ -26,6 +27,7 @@ import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
 
+@Dao
 interface VideoDao {
     @Query("Select * from databasevideo")
     fun getVideos(): LiveData<List<DatabaseVideo>>
