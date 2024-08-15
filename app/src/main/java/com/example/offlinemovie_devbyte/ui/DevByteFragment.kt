@@ -71,7 +71,6 @@ class DevByteFragment : Fragment() {
      */
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        Log.i("DevByteFragment","onViewCreated")
         viewModel.playlist.observe(viewLifecycleOwner, Observer<List<Video>> { videos ->
             videos?.apply {
                 viewModelAdapter?.videos = videos
